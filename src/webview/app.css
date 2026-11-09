@@ -1,0 +1,1041 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Waypoint Design System — Tailwind v4 CSS-first config.
+
+   Three tiers:
+   1. @theme        — static tokens (fonts, radii, easing, keyframes) minted
+                      straight into utilities.
+   2. @theme inline — runtime-swapped tokens mapped into utility namespaces;
+                      `inline` makes utilities reference the underlying
+                      var(--…), so the always-dark :root and the
+                      [data-plan-theme="light"] card scope keep working.
+   3. :root / [data-plan-theme="light"] — the runtime tokens themselves.
+   ============================================================ */
+
+@theme {
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "Monaco", "JetBrains Mono", "SFMono-Regular", Menlo,
+    Consolas, monospace;
+
+  /* Radius scale (slightly softened, per the design). Overrides Tailwind's
+     rounded-* scale on purpose. */
+  --radius-xs: 3px;
+  --radius-sm: 7px;
+  --radius-md: 11px;
+  --radius-pill: 999px;
+
+  --shadow-pop: 0 8px 28px rgba(31, 30, 29, 0.12);
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  --animate-wp-fade: wpFade 200ms var(--ease-standard);
+  --animate-wp-toast: wpToast 200ms var(--ease-standard);
+  --animate-wp-scale: wpScale 120ms var(--ease-standard);
+  --animate-wp-overlay: wpOverlay 140ms var(--ease-standard);
+  --animate-wp-spin: wpSpin 700ms linear infinite;
+
+  @keyframes wpFade {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes wpToast {
+    from {
+      opacity: 0;
+      transform: translate(-50%, 10px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+  @keyframes wpScale {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes wpOverlay {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes wpSpin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@theme inline {
+  /* Semantic text → text-strong / text-body / text-muted / text-subtle … */
+  --color-strong: var(--text-strong);
+  --color-body: var(--text-body);
+  --color-muted: var(--text-muted);
+  --color-subtle: var(--text-subtle);
+  --color-on-fill: var(--text-on-fill);
+
+  /* Surfaces → bg-surface-page / bg-surface-card / … */
+  --color-surface-page: var(--surface-page);
+  --color-surface-paper: var(--surface-paper);
+  --color-surface-card: var(--surface-card);
+  --color-surface-quiet: var(--surface-quiet);
+  --color-surface-code: var(--surface-code);
+
+  /* Lines → border-hairline / border-strongline */
+  --color-hairline: var(--border-hairline);
+  --color-strongline: var(--border-strong);
+
+  /* Brand palette, wp- prefixed so Tailwind's own green/indigo/orange/red
+     scales stay untouched. */
+  --color-wp-green-100: var(--color-green-100);
+  --color-wp-green-500: var(--color-green-500);
+  --color-wp-green-700: var(--color-green-700);
+  --color-wp-green-800: var(--color-green-800);
+  --color-wp-indigo-100: var(--color-indigo-100);
+  --color-wp-indigo-600: var(--color-indigo-600);
+  --color-wp-indigo-800: var(--color-indigo-800);
+  --color-wp-orange-100: var(--color-orange-100);
+  --color-wp-orange-300: var(--color-orange-300);
+  --color-wp-orange-500: var(--color-orange-500);
+  --color-wp-orange-700: var(--color-orange-700);
+  --color-wp-red-100: var(--color-red-100);
+  --color-wp-red-800: var(--color-red-800);
+  --color-wp-ink-800: var(--color-ink-800);
+  --color-wp-gray-100: var(--color-gray-100);
+  --color-wp-gray-300: var(--color-gray-300);
+  --color-wp-white: var(--color-white);
+
+  /* Always-dark code card. */
+  --color-code-bg: var(--code-card-bg);
+  --color-code-fg: var(--code-card-fg);
+  --color-code-border: var(--code-card-border);
+  --color-code-tab-bg: var(--code-card-tab-bg);
+  --color-code-tab-fg: var(--code-card-tab-fg);
+
+  /* Hairline inset ring as a shadow utility (shadow-hairline). */
+  --shadow-hairline: var(--ring-hairline);
+}
+
+/* ---- Runtime tokens: light base palette (the card's light values). ---- */
+:root {
+  --color-ink-900: #000000;
+  --color-ink-800: #1f1e1d;
+  --color-ink-700: #3d3d3a;
+  --color-ink-600: #444441;
+  --color-ink-500: #5f5e5a;
+  --color-ink-400: #737268;
+  --color-gray-500: #828282;
+  --color-gray-300: #c1c1c1;
+  --color-gray-200: #eaeaea;
+  --color-gray-100: #f4f4f3;
+  --color-paper: #f1efe8;
+  --color-white: #ffffff;
+
+  --color-green-700: #0f6e56;
+  --color-green-800: #085041;
+  --color-green-500: #1d9e75;
+  --color-green-100: #e1f5ee;
+
+  --color-indigo-600: #534ab7;
+  --color-indigo-800: #3c3489;
+  --color-indigo-100: #eeedfe;
+
+  --color-orange-500: #ff6a00;
+  --color-orange-700: #d95a00;
+  --color-orange-300: rgba(255, 106, 0, 0.25);
+  --color-orange-100: #fff0e5;
+
+  --color-red-800: #b42318;
+  --color-red-100: rgba(255, 80, 80, 0.16);
+
+  --text-strong: var(--color-ink-900);
+  --text-body: var(--color-ink-700);
+  --text-muted: var(--color-ink-500);
+  --text-subtle: var(--color-gray-500);
+  --text-on-fill: var(--color-white);
+
+  --surface-page: var(--color-white);
+  --surface-paper: var(--color-paper);
+  --surface-card: var(--color-white);
+  --surface-quiet: var(--color-gray-200);
+  --surface-code: var(--color-gray-200);
+
+  --border-hairline: var(--color-gray-300);
+  --border-strong: var(--color-ink-400);
+
+  --focus-ring: var(--color-green-500);
+  --ring-hairline: inset 0 0 0 1px var(--border-hairline);
+
+  --code-kw: #cf222e;
+  --code-str: #0a3069;
+  --code-com: #6e7781;
+  --code-fn: #8250df;
+  --code-num: #0550ae;
+}
+
+/* ---- Chrome is ALWAYS dark: these overrides (native VS Code colors for
+   surfaces / text / borders, original design values as fallbacks) are the
+   root defaults, winning over the light base block above. The theme toggle
+   only re-lightens the plan card via [data-plan-theme="light"] below. ---- */
+:root {
+  --color-white: var(--vscode-editorWidget-background, #1c1b18);
+  --color-paper: var(--vscode-editorWidget-background, #232220);
+  --color-gray-100: var(--vscode-list-hoverBackground, #242320);
+  --color-gray-200: var(--vscode-textCodeBlock-background, #211f1c);
+  --color-gray-300: var(--vscode-panel-border, #393831);
+  --color-gray-500: var(--vscode-descriptionForeground, #8b897f);
+  --color-ink-900: var(--vscode-foreground, #f4f2ec);
+  --color-ink-800: #0f0e0d;
+  --color-ink-700: var(--vscode-foreground, #d9d7ce);
+  --color-ink-600: #c9c7be;
+  --color-ink-500: var(--vscode-descriptionForeground, #a8a69c);
+  --color-ink-400: #8a887e;
+  --color-green-100: #11332b;
+  --color-green-800: #7fe3c0;
+  --color-indigo-100: #20203f;
+  --color-indigo-800: #b9b4ff;
+  --color-orange-100: #2d1b0e;
+  --color-red-800: #ff9a90;
+  --color-red-100: rgba(255, 90, 80, 0.22);
+
+  --text-strong: var(--vscode-foreground, #f4f2ec);
+  --text-body: var(--vscode-foreground, #d9d7ce);
+  --text-muted: var(--vscode-descriptionForeground, #a8a69c);
+  --text-subtle: var(--vscode-descriptionForeground, #898779);
+  --text-on-fill: #ffffff;
+
+  --surface-page: var(--vscode-editor-background, #121110);
+  --surface-card: var(--vscode-editorWidget-background, #1c1b18);
+  --surface-paper: var(--vscode-editor-background, #232220);
+  --surface-quiet: var(--vscode-textCodeBlock-background, #211f1c);
+  --surface-code: var(--vscode-textCodeBlock-background, #1b1a17);
+  --border-hairline: var(--vscode-panel-border, #38372f);
+  --border-strong: var(--vscode-input-border, #4c4b43);
+
+  --code-kw: #ff7b72;
+  --code-str: #a5d6ff;
+  --code-com: #8b949e;
+  --code-fn: #d2a8ff;
+  --code-num: #79c0ff;
+}
+
+/* ---- Always-dark code card (both plan themes). ---- */
+:root {
+  --code-card-bg: #0d1117;
+  --code-card-fg: #c9d1d9;
+  --code-card-border: #2b3038;
+  --code-card-tab-bg: #161b22;
+  --code-card-tab-fg: #9aa4b2;
+}
+
+/* ---- Light plan theme, scoped to the document card. Restores the original
+   light values for every token the dark root overrides; semantic tokens
+   reference palette vars, which resolve per-element, so the whole card
+   subtree flips. ---- */
+[data-plan-theme="light"] {
+  --color-white: #ffffff;
+  --color-paper: #f1efe8;
+  --color-gray-100: #f4f4f3;
+  --color-gray-200: #eaeaea;
+  --color-gray-300: #c1c1c1;
+  --color-gray-500: #828282;
+  --color-ink-900: #000000;
+  --color-ink-800: #1f1e1d;
+  --color-ink-700: #3d3d3a;
+  --color-ink-600: #444441;
+  --color-ink-500: #5f5e5a;
+  --color-ink-400: #737268;
+  --color-green-100: #e1f5ee;
+  --color-green-800: #085041;
+  --color-indigo-100: #eeedfe;
+  --color-indigo-800: #3c3489;
+  --color-orange-100: #fff0e5;
+  --color-red-800: #b42318;
+  --color-red-100: rgba(255, 80, 80, 0.16);
+
+  --text-strong: var(--color-ink-900);
+  --text-body: var(--color-ink-700);
+  --text-muted: var(--color-ink-500);
+  --text-subtle: var(--color-gray-500);
+  --text-on-fill: var(--color-white);
+
+  --surface-page: var(--color-white);
+  --surface-paper: var(--color-paper);
+  --surface-card: var(--color-white);
+  --surface-quiet: var(--color-gray-200);
+  --surface-code: var(--color-gray-200);
+  --border-hairline: var(--color-gray-300);
+  --border-strong: var(--color-ink-400);
+
+  --code-kw: #cf222e;
+  --code-str: #0a3069;
+  --code-com: #6e7781;
+  --code-fn: #8250df;
+  --code-num: #0550ae;
+}
+
+/* ============================================================
+   Component classes. Everything below styles either page basics or
+   renderer-emitted DOM (markdown.ts / calloutFeedback.ts generate HTML
+   strings, so their classes cannot carry inline utilities). Class names are
+   load-bearing — injection, outlining, and tests key off them.
+   ============================================================ */
+@layer components {
+  /* ---- tooltips ----
+     VS Code's webview does not render native `title` tooltips, so a control
+     that needs an explanation carries `data-tip` as well and draws its own.
+     A pseudo-element cannot be hovered or clicked, so the bubble can never sit
+     between the pointer and the control it describes. `title` stays on the
+     element for screen readers. */
+  [data-tip] {
+    position: relative;
+  }
+  [data-tip]::after {
+    content: attr(data-tip);
+    @apply pointer-events-none absolute left-1/2 z-50 rounded-xs bg-surface-card px-2 py-1 font-sans text-[11px] font-medium text-body opacity-0 shadow-[var(--ring-hairline),var(--shadow-pop)];
+    top: calc(100% + 6px);
+    white-space: nowrap;
+    transform: translateX(-50%);
+    /* Leaving is immediate; the delay below is only on the way in. */
+    transition: opacity 90ms var(--ease-standard);
+  }
+  [data-tip]:hover::after,
+  [data-tip]:focus-visible::after {
+    @apply opacity-100;
+    /* The delay is the whole point of a tooltip: it must not flash at someone
+       crossing the toolbar on the way somewhere else. */
+    transition-delay: 300ms;
+  }
+  /* Near the right edge the bubble would run off the panel, so those controls
+     hang it from their right edge instead of centring it. */
+  [data-tip][data-tip-align="end"]::after {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+
+  html,
+  body {
+    @apply m-0 h-full p-0;
+  }
+  body {
+    @apply bg-surface-page font-display text-strong antialiased;
+  }
+
+  /* Selection tint — pseudo-element, not expressible as a utility. */
+  ::selection {
+    background: rgba(255, 106, 0, 0.28);
+  }
+
+  /* Comment highlights (CSS Custom Highlight API) — ::highlight() rules are
+     not expressible as utilities. Inactive: underline; active: + light fill. */
+  ::highlight(comment) {
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-orange-500);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2.5px;
+  }
+  ::highlight(comment-active) {
+    background-color: rgba(255, 106, 0, 0.13);
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-orange-500);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2.5px;
+  }
+
+  /* ---- the document card ---- */
+  .wp-doc-card {
+    @apply rounded-md bg-surface-card;
+    box-shadow:
+      var(--ring-hairline),
+      0 4px 18px rgba(0, 0, 0, 0.18);
+    padding: 18px 20px 24px;
+  }
+
+  /* ---- plan prose ---- */
+  .wp-prose {
+    @apply font-display text-sm text-strong;
+    line-height: 1.65;
+  }
+  .wp-prose h1 {
+    @apply font-semibold;
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+  }
+  .wp-prose h2 {
+    @apply border-b border-hairline pb-2 text-lg font-semibold;
+    line-height: 1.2;
+    margin: 32px 0 14px;
+  }
+  .wp-prose h3 {
+    @apply text-base font-semibold;
+    margin: 18px 0 10px;
+  }
+  .wp-prose p,
+  .wp-prose li {
+    @apply text-sm;
+    line-height: 1.65;
+  }
+  /* Tailwind's preflight strips markers and indent from every list, and nothing
+     put them back — so a bullet list in a plan rendered as unindented running
+     lines. Restored here rather than per construct, since a list reads the same
+     in prose, in a callout, and inside a collapse.
+     `:not(.wp-check-list)` is load-bearing: `.wp-prose ul` would otherwise
+     outrank that class's own `list-none` and put discs on the gate criteria. */
+  .wp-prose ul:not(.wp-check-list),
+  .wp-prose ol {
+    margin: 0;
+    padding-left: 16px;
+  }
+  .wp-prose ul:not(.wp-check-list) {
+    list-style: disc;
+  }
+  .wp-prose ol {
+    list-style: decimal;
+  }
+  /* Nested levels stay distinguishable without extra colour. */
+  .wp-prose ul ul:not(.wp-check-list) {
+    list-style: circle;
+  }
+  /* A nested list belongs to its parent item rather than starting a block of
+     its own, so it keeps the rhythm of the bullets around it. */
+  .wp-prose li > ul,
+  .wp-prose li > ol {
+    margin: 0;
+  }
+  .wp-prose a {
+    @apply text-wp-green-700;
+  }
+  /* Plain fences (no filename tab) share the always-dark code chrome. */
+  .wp-prose pre {
+    @apply rounded-sm border border-code-border bg-code-bg text-xs text-code-fg;
+    line-height: 1.6;
+  }
+  .wp-prose pre code.hljs {
+    @apply bg-transparent p-0;
+  }
+  /* Inline code / file references. The color is set explicitly because VS
+     Code's default webview stylesheet paints a bare `code` with
+     `--vscode-textPreformat-foreground` — an *editor*-theme token, so a light
+     plan card in a dark window inherited a washed-out amber. Indigo is the
+     plan card's own token, and it tracks the card's light/dark scope. */
+  .wp-prose :not(pre) > code {
+    @apply bg-transparent p-0 font-mono text-wp-indigo-800;
+    font-size: 0.9em;
+  }
+  /* A reference the host resolved to a real file — clickable, and marked as
+     such only once resolution came back. The affordance is a tinted chip on
+     hover, never an underline: underlines are the comment highlight's alone
+     (see the CSS Custom Highlight rules above), and a second underline in the
+     prose would read as a comment that isn't there. */
+  .wp-prose code.wp-ref.is-linked {
+    @apply cursor-pointer rounded-xs;
+    padding: 0 3px;
+    /* Tint mixed from the text color, so the chip reads on the page and on a
+       tinted callout of any hue — including an indigo decision. */
+    background: color-mix(in srgb, currentColor 9%, transparent);
+    transition: background-color 90ms var(--ease-standard);
+  }
+  .wp-prose code.wp-ref.is-linked:hover {
+    background: color-mix(in srgb, currentColor 20%, transparent);
+  }
+  .wp-prose blockquote {
+    @apply border-l-[3px] border-hairline pl-4 text-muted not-italic;
+  }
+
+  /* ---- inline editing: a caret, and nothing else. Double-clicking prose puts
+     the block in contenteditable; the only visible change may be the caret,
+     so the focus ring is suppressed deliberately, not by oversight. */
+  .wp-prose [contenteditable] {
+    @apply outline-none;
+    /* Belt and braces on the wrapping: the plan source is hard-wrapped, so any
+       editing mode that preserves its newlines re-flows the paragraph the
+       moment it takes focus. A caret is the only thing double-clicking may
+       change, so wrap exactly as the read-only render does. */
+    white-space: normal;
+  }
+  /* Deleted runs are a record of what the text used to say, not text: the
+     caret skips them and they are never editable. */
+  .wp-prose del.wp-del {
+    user-select: none;
+  }
+
+  /* ---- inline redline diff (htmldiff ins/del), VS Code palette + fallback.
+     Deleted text stays legible in place — no display:none, no strikethrough. */
+  .wp-prose ins.wp-ins {
+    @apply rounded-[2px] px-px text-wp-green-800 no-underline;
+    background: var(
+      --vscode-diffEditor-insertedTextBackground,
+      var(--color-green-100)
+    );
+  }
+  .wp-prose del.wp-del {
+    @apply rounded-[2px] px-px text-wp-red-800 no-underline;
+    background: var(
+      --vscode-diffEditor-removedTextBackground,
+      var(--color-red-100)
+    );
+  }
+
+  /* ---- callouts (:::note / :::assumption / :::decision) ---- */
+  .wp-prose .wp-callout {
+    @apply rounded-md border border-hairline bg-surface-quiet;
+    margin: 18px 0;
+    padding: 13px 16px;
+  }
+  .wp-prose .wp-callout p,
+  .wp-prose .wp-callout li {
+    @apply text-[13px] text-body;
+  }
+  /* Header row: the type label with the first entry's chips beside it. */
+  .wp-prose .wp-callout-head {
+    @apply flex flex-wrap items-center gap-2;
+    margin-bottom: 6px;
+  }
+  /* The agent is writing the next version, so this text is already history.
+     Grey it and take it out of the pointer's reach — a comment anchored into it
+     would land on a version that no longer exists (#D8). `readOnly` blocks the
+     handlers; this makes the state visible and stops the hover affordances. */
+  .wp-prose.is-regenerating {
+    @apply opacity-55;
+    pointer-events: none;
+    user-select: none;
+    transition: opacity 120ms var(--ease-standard);
+  }
+  .wp-prose .wp-callout-label {
+    @apply font-sans text-[10px] font-bold uppercase text-subtle;
+    letter-spacing: 0.09em;
+  }
+  /* Assumptions read green (they carry the verification status), decisions
+     purple (a stance the reviewer weighs). */
+  .wp-prose .wp-callout--assumption {
+    @apply border-transparent bg-wp-green-100;
+  }
+  .wp-prose .wp-callout--assumption .wp-callout-label {
+    @apply text-wp-green-800;
+  }
+  .wp-prose .wp-callout--decision {
+    @apply border-transparent bg-wp-indigo-100;
+  }
+  .wp-prose .wp-callout--decision .wp-callout-label {
+    @apply text-wp-indigo-800;
+  }
+  .wp-prose .wp-callout--warning {
+    @apply border-transparent bg-wp-orange-100;
+  }
+  .wp-prose .wp-callout--warning .wp-callout-label {
+    @apply text-wp-orange-500;
+  }
+  /* Context boundary — a disclosure, not a stance: dashed on the quiet
+     surface, visually distinct from the tinted stance-bearing callouts. */
+  .wp-prose .wp-callout--boundary {
+    @apply bg-surface-quiet;
+    border: 1px dashed var(--border-strong);
+  }
+  /* Run record — the implementer's log; deliberately the quiet base chrome
+     (solid hairline, subtle label), pinned here as a stable type hook. */
+  .wp-prose .wp-callout--runrecord {
+    @apply border-hairline bg-surface-quiet;
+  }
+  /* Each merged source block is its own entry; dividers live on the entry
+     boundary (no <hr> — entries must add no text/markup inside the flow). */
+  .wp-prose .wp-callout-entry {
+    @apply relative;
+  }
+  /* Two columns: the body fills, a narrow rail on the right holds the verdict
+     badge and the stacked hover actions. The ID badge rides the end of the
+     body text (see .wp-entry-body .wp-id below) — no chrome costs a row. */
+  .wp-prose .wp-callout-entry.has-rail {
+    @apply flex items-start gap-2;
+  }
+  .wp-entry-body {
+    @apply min-w-0 flex-1;
+  }
+  .wp-entry-rail {
+    @apply flex shrink-0 flex-col items-end;
+    width: 24px;
+  }
+  /* Zero-height anchor at the top of the rail: the verdict badge and the
+     actions overlay share it, so revealing the actions on hover never
+     reflows the entry. */
+  .wp-entry-slot {
+    @apply relative w-full;
+    height: 0;
+  }
+  .wp-prose .wp-entry-body > :first-child {
+    @apply mt-0;
+  }
+  .wp-prose .wp-entry-body > :last-child {
+    @apply mb-0;
+  }
+  .wp-prose .wp-callout-entry + .wp-callout-entry {
+    @apply mt-3 border-t border-hairline pt-3;
+  }
+
+  /* ---- entry meta row: provenance / stakes chips (the ID badge rides the
+     rail). All labels are CSS generated content on text-free spans, so comment
+     offsets never move. ---- */
+  .wp-entry-meta {
+    @apply mb-1.5 flex flex-wrap items-center gap-1.5;
+  }
+  .wp-prose .wp-entry-meta + * {
+    @apply mt-0;
+  }
+  .wp-id[data-id] {
+    @apply inline-flex shrink-0 items-center whitespace-nowrap rounded-pill bg-surface-card font-mono text-[10px] text-subtle shadow-hairline;
+    padding: 1px 5px;
+  }
+  /* The entry's ID trails its last word — an end-of-text marker, not a header.
+     Nudged down a hair so the pill's cap height centers on the text x-height. */
+  .wp-entry-body .wp-id[data-id] {
+    @apply ml-1.5 align-baseline;
+    position: relative;
+    top: 1px;
+  }
+  /* Fallback placement when the entry ends in a block that cannot host inline
+     content (fenced code, a table): the marker sits on its own trailing line,
+     pushed to the right edge rather than dangling at the left. */
+  .wp-prose .wp-entry-body > .wp-id[data-id] {
+    @apply mt-1 ml-auto flex w-fit;
+    top: 0;
+  }
+  .wp-id[data-id]::after {
+    content: attr(data-id);
+  }
+  .wp-chip {
+    @apply inline-flex shrink-0 items-center rounded-pill font-sans text-[9px] font-bold uppercase;
+    letter-spacing: 0.07em;
+    padding: 2px 7px;
+  }
+  .wp-chip--verified-code,
+  .wp-chip--verified-probe {
+    @apply bg-wp-green-100 text-wp-green-800;
+  }
+  /* The chip says what the provenance token means, not just its name — a
+     reviewer meeting the box for the first time reads "VERIFIED" as "done"
+     unless the pill tells them what was verified and how. Still generated
+     content, so a longer label moves no document character offset. */
+  .wp-chip--verified-code::after {
+    content: "Verified · checked in codebase";
+  }
+  .wp-chip--verified-probe::after {
+    content: "Verified · tested by a gate";
+  }
+  .wp-chip--verified-probe[data-ref]::after {
+    content: "Verified · tested by " attr(data-ref);
+  }
+  .wp-chip--claim-external {
+    @apply bg-wp-indigo-100 text-wp-indigo-800;
+  }
+  .wp-chip--claim-external::after {
+    content: "Claim · from an outside source";
+  }
+  .wp-chip--asserted {
+    @apply bg-wp-orange-100 text-wp-orange-500;
+  }
+  .wp-chip--asserted::after {
+    content: "Asserted · no evidence yet";
+  }
+  /* Every decision carries this one: it says what the purple box is, the way
+     the provenance chip does for an assumption. */
+  .wp-chip--proposed {
+    @apply bg-wp-indigo-100 text-wp-indigo-800;
+  }
+  .wp-chip--proposed::after {
+    content: "Proposed · design choice";
+  }
+  .wp-chip--deviates-spec,
+  .wp-chip--deviates-code,
+  .wp-chip--deviates-convention {
+    @apply bg-wp-indigo-100 text-wp-indigo-800;
+  }
+  .wp-chip--deviates-spec::after {
+    content: "Deviates · spec";
+  }
+  .wp-chip--deviates-code::after {
+    content: "Deviates · code";
+  }
+  .wp-chip--deviates-convention::after {
+    content: "Deviates · convention";
+  }
+  /* Stakes chips are louder than provenance — risk scales effort. */
+  .wp-chip--stakes-irreversible,
+  .wp-chip--stakes-security-boundary {
+    @apply bg-wp-red-100 text-wp-red-800;
+  }
+  .wp-chip--stakes-irreversible::after {
+    content: "Irreversible";
+  }
+  .wp-chip--stakes-security-boundary::after {
+    content: "Security boundary";
+  }
+  .wp-chip--stakes-public-api {
+    @apply bg-wp-orange-100 text-wp-orange-500;
+  }
+  .wp-chip--stakes-public-api::after {
+    content: "Public API";
+  }
+  .wp-chip--revised {
+    @apply bg-wp-indigo-100 text-wp-indigo-800;
+  }
+  .wp-chip--revised[data-rev]::after {
+    content: "Revised · v" attr(data-rev);
+  }
+  /* A chip that shares its callout's hue would sink into the surface — flip it
+     to the card fill and let the hue carry in the text instead. */
+  .wp-prose .wp-callout--decision .wp-chip--proposed,
+  .wp-prose .wp-callout--decision .wp-chip--deviates-spec,
+  .wp-prose .wp-callout--decision .wp-chip--deviates-code,
+  .wp-prose .wp-callout--decision .wp-chip--deviates-convention {
+    @apply bg-surface-card text-wp-indigo-800;
+  }
+  .wp-prose .wp-callout--assumption .wp-chip--verified-code,
+  .wp-prose .wp-callout--assumption .wp-chip--verified-probe {
+    @apply bg-surface-card text-wp-green-800;
+  }
+  .wp-prose .wp-callout--decision .wp-chip--deviates-spec,
+  .wp-prose .wp-callout--decision .wp-chip--deviates-code,
+  .wp-prose .wp-callout--decision .wp-chip--deviates-convention,
+  .wp-prose .wp-callout--decision .wp-chip--revised {
+    @apply bg-surface-card text-wp-indigo-800;
+  }
+
+  /* ---- callout feedback: hover actions + verdict badge, stacked in the
+     entry's rail. Injected nodes are text-free (SVG buttons; badge glyph is
+     ::after content) so comment offsets are untouched. The stack sits directly
+     on the callout surface — entries are tall enough to clear it, so it needs
+     no card of its own. ---- */
+  .wp-callout-actions {
+    @apply pointer-events-none absolute right-0 top-0 inline-flex flex-col items-center gap-0.5 opacity-0;
+    transition: opacity 100ms var(--ease-standard);
+  }
+  .wp-prose .wp-callout-entry:hover .wp-callout-actions {
+    @apply pointer-events-auto opacity-100;
+  }
+  .wp-cal-btn {
+    @apply inline-flex h-[22px] w-[22px] cursor-pointer items-center justify-center rounded-xs border-0 bg-transparent p-0 text-subtle;
+  }
+  .wp-cal-btn:hover {
+    @apply bg-surface-card text-strong;
+  }
+  .wp-cal-btn svg {
+    @apply h-3.5 w-3.5;
+  }
+  .wp-cal-reject.active {
+    @apply text-wp-red-800;
+  }
+
+  /* Verdict badge — a compact rail marker in the same slot the actions use, so
+     hovering the entry swaps it for the buttons. Its glyph is CSS generated
+     content (::after), never real text; the word is in the title tooltip.
+     Card fill with a hued glyph, so it reads on a tinted callout surface of
+     any hue — including its own. */
+  .wp-verdict {
+    @apply pointer-events-none absolute right-0 top-0 hidden h-[18px] w-[18px] items-center justify-center rounded-pill bg-surface-card font-sans text-[11px] font-bold leading-none shadow-hairline;
+  }
+  .wp-verdict--accept,
+  .wp-verdict--reject {
+    @apply flex;
+  }
+  .wp-verdict--accept {
+    @apply text-wp-green-800;
+  }
+  .wp-verdict--accept::after {
+    content: "✓";
+  }
+  .wp-verdict--reject {
+    @apply text-wp-red-800;
+  }
+  .wp-verdict--reject::after {
+    content: "✕";
+  }
+  .wp-prose .wp-callout-entry:hover .wp-verdict--accept,
+  .wp-prose .wp-callout-entry:hover .wp-verdict--reject {
+    @apply opacity-0;
+  }
+
+  /* Subtle verdict tint: a colored bar in the aside's padding gutter (an
+     empty ::before — no text, no layout shift). */
+  .wp-prose .wp-callout-entry.is-accepted::before,
+  .wp-prose .wp-callout-entry.is-rejected::before {
+    content: "";
+    position: absolute;
+    left: -9px;
+    top: 3px;
+    bottom: 3px;
+    width: 2.5px;
+    border-radius: 2px;
+  }
+  .wp-prose .wp-callout-entry.is-accepted::before {
+    background: var(--color-green-700);
+  }
+  .wp-prose .wp-callout-entry.is-rejected::before {
+    background: var(--color-red-800);
+  }
+
+  /* ---- code block: ALWAYS a dark card (GitHub-dark palette + hljs-dark),
+     in both plan themes. ---- */
+  .wp-prose .wp-code {
+    @apply overflow-hidden rounded-sm border border-code-border bg-code-bg;
+    margin: 16px 0;
+  }
+  .wp-code-file {
+    @apply block border-b border-code-border bg-code-tab-bg font-mono text-code-tab-fg;
+    padding: 7px 13px;
+    font-size: 11.5px;
+  }
+  .wp-prose .wp-code pre {
+    @apply m-0 rounded-none border-0 bg-code-bg text-code-fg;
+    padding: 13px 15px;
+  }
+
+  /* ---- tables: design-system chrome, wide ones scroll inside the column ---- */
+  .wp-prose table {
+    @apply block max-w-full overflow-x-auto border-collapse;
+    margin: 16px 0;
+  }
+  .wp-prose thead th {
+    @apply bg-surface-quiet text-left font-sans text-[11px] font-semibold uppercase text-muted;
+    letter-spacing: 0.04em;
+  }
+  .wp-prose th,
+  .wp-prose td {
+    @apply border border-hairline text-[13px];
+    padding: 6px 10px;
+    line-height: 1.5;
+  }
+
+  /* ---- mermaid diagram (rendered client-side into .wp-mermaid-out) ---- */
+  .wp-prose .wp-mermaid {
+    @apply text-center;
+    margin: 20px 0;
+  }
+  /* Raw source is only read back by the renderer — never shown. */
+  .wp-prose .wp-mermaid-src {
+    @apply hidden;
+  }
+  /* Full-width so the SVG below has a definite base to scale against; kept
+     out of the selectable text flow so it doesn't perturb comment offsets. */
+  .wp-prose .wp-mermaid-out {
+    @apply w-full select-none overflow-x-auto;
+  }
+  /* Width is set inline by sizeDiagram() — mermaid's own width="100%" and
+     max-width are overridden there, so no max-w-full here. */
+  .wp-prose .wp-mermaid-out svg {
+    @apply mx-auto block h-auto;
+  }
+  /* A scrolling figure must not be centred: `text-align:center` on an
+     overflowing scroll container clips the left edge instead of the right. */
+  .wp-prose .wp-mermaid-scroll {
+    @apply text-left;
+  }
+  .wp-prose .wp-mermaid-scroll .wp-mermaid-out svg {
+    @apply mx-0;
+  }
+  .wp-prose .wp-mermaid-err {
+    @apply self-stretch whitespace-pre-wrap rounded-sm border border-hairline bg-surface-quiet font-mono text-xs text-muted;
+    margin: 0;
+    padding: 10px 12px;
+  }
+
+  /* ---- collapsible section (:::collapse Title | Subtitle) ---- */
+  .wp-prose .wp-collapse {
+    @apply rounded-md border border-hairline;
+    margin: 24px 0;
+    padding: 4px 16px;
+  }
+  .wp-prose .wp-collapse > summary {
+    @apply flex cursor-pointer list-none items-center gap-2 py-2.5;
+  }
+  .wp-prose .wp-collapse > summary::-webkit-details-marker {
+    @apply hidden;
+  }
+  .wp-caret {
+    @apply h-[15px] w-[15px] shrink-0 text-subtle;
+    transition: transform 120ms var(--ease-standard);
+  }
+  .wp-prose .wp-collapse:not([open]) > summary .wp-caret {
+    transform: rotate(-90deg);
+  }
+  .wp-col-head {
+    @apply flex flex-col gap-px;
+  }
+  .wp-col-title {
+    @apply font-display text-[15px] font-semibold text-strong;
+    line-height: 1.2;
+  }
+  .wp-col-sub {
+    @apply font-sans text-xs text-muted;
+  }
+  .wp-col-body {
+    padding: 4px 0 12px;
+  }
+  .wp-col-body > :first-child {
+    @apply mt-0;
+  }
+
+  /* ---- checklist (:::checklist) — borderless, inline under a heading ---- */
+  .wp-prose .wp-checklist {
+    margin: 12px 0 20px;
+  }
+  .wp-checklist-title {
+    @apply font-display text-sm font-semibold text-strong;
+    margin: 0 0 10px;
+  }
+  .wp-check-list {
+    @apply m-0 flex list-none flex-col p-0;
+    gap: 9px;
+  }
+  /* The row carries no pointer: only the box toggles the criterion (see the
+     click handler in PlanDocument.svelte), and the label is prose the reviewer
+     selects, comments on, and double-clicks to edit. It gets the I-beam every
+     other paragraph gets. */
+  .wp-check {
+    @apply flex items-start gap-2.5;
+  }
+  .wp-check-box {
+    @apply mt-px inline-flex h-4 w-4 shrink-0 cursor-pointer items-center justify-center rounded-xs text-on-fill;
+    border: 1.5px solid var(--border-strong);
+    transition:
+      background 100ms var(--ease-standard),
+      border-color 100ms var(--ease-standard);
+  }
+  .wp-check-box svg {
+    @apply h-3 w-3 opacity-0;
+  }
+  .wp-check.is-checked .wp-check-box {
+    @apply border-wp-green-700 bg-wp-green-700;
+  }
+  .wp-check.is-checked .wp-check-box svg {
+    @apply opacity-100;
+  }
+  .wp-check-label {
+    @apply font-display text-[13px] text-body;
+    line-height: 1.5;
+  }
+  /* Label + override notes stack; wrapper exists only when notes do. */
+  .wp-check-main {
+    @apply flex min-w-0 flex-1 flex-col;
+  }
+  .wp-check-note {
+    @apply font-sans text-xs text-muted;
+    margin-top: 2px;
+  }
+  .wp-check-note--override {
+    @apply text-wp-orange-500;
+  }
+  .wp-check-note--override::before {
+    content: "Override: ";
+    font-weight: 700;
+  }
+  .wp-check-note--evidence {
+    @apply text-wp-green-700;
+  }
+  .wp-check-note--evidence::before {
+    content: "Evidence: ";
+    font-weight: 700;
+  }
+  /* Asserted smell — a bare tick in an evidence-bearing plan. Document
+     opt-in: `wp-has-evidence` is stamped by PlanDocument, so legacy plans
+     without evidence lines render exactly as before. */
+  .wp-has-evidence .wp-check.is-checked:not(.wp-check--human):not(.wp-check--evidenced) .wp-check-box {
+    @apply border-wp-orange-500 bg-wp-orange-500;
+  }
+  .wp-has-evidence .wp-check.is-checked:not(.wp-check--human):not(.wp-check--evidenced) .wp-check-label {
+    @apply text-wp-orange-500;
+  }
+  .wp-check.is-checked .wp-check-label {
+    @apply text-muted line-through;
+  }
+  /* `@human` criterion — orange (a check only a human can tick). */
+  .wp-check--human .wp-check-label {
+    @apply text-wp-orange-500;
+  }
+  .wp-check--human .wp-check-box {
+    border-color: var(--color-orange-500);
+  }
+  .wp-check--human.is-checked .wp-check-box {
+    @apply border-wp-orange-500 bg-wp-orange-500;
+  }
+  .wp-check--human.is-checked .wp-check-label {
+    @apply text-muted line-through;
+  }
+  .wp-check-human-badge {
+    @apply mt-px inline-flex shrink-0 items-center rounded-xs bg-wp-orange-100 px-1.5 font-sans text-[9px] font-bold uppercase text-wp-orange-500;
+    letter-spacing: 0.07em;
+    line-height: 16px;
+  }
+  /* `@human:blocking` — the run stops here until the reviewer ticks it, so the
+     badge says so and reads at the red end. The suffix is generated content,
+     like the callout chips: it adds no document character to shift a comment
+     anchor. */
+  .wp-check--blocking .wp-check-human-badge {
+    @apply bg-wp-red-100 text-wp-red-800;
+  }
+  .wp-check--blocking .wp-check-human-badge::after {
+    content: " · blocking";
+  }
+  .wp-check--blocking .wp-check-label {
+    @apply text-wp-red-800;
+  }
+  .wp-check--blocking .wp-check-box {
+    border-color: var(--color-red-800);
+  }
+  .wp-check--blocking.is-checked .wp-check-box {
+    @apply border-wp-red-800 bg-wp-red-800;
+  }
+  /* Inline input shown while adding a new acceptance criterion. */
+  .wp-check-input {
+    @apply min-w-0 flex-1 border-0 bg-transparent p-0 font-display text-[13px] text-strong outline-none;
+    line-height: 1.5;
+  }
+  .wp-check-input::placeholder {
+    @apply text-subtle;
+  }
+  /* Hover × to remove an acceptance criterion. */
+  .wp-check-del {
+    @apply ml-auto inline-flex h-[18px] w-[18px] shrink-0 cursor-pointer items-center justify-center rounded-xs border-0 bg-transparent p-0 text-subtle opacity-0;
+    transition:
+      opacity 100ms var(--ease-standard),
+      color 100ms var(--ease-standard),
+      background 100ms var(--ease-standard);
+  }
+  .wp-check:hover .wp-check-del {
+    @apply opacity-100;
+  }
+  .wp-check-del:hover {
+    @apply bg-surface-quiet text-wp-red-800;
+  }
+  .wp-check-del svg {
+    @apply h-3 w-3;
+  }
+  .wp-check-add {
+    @apply inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 font-sans text-xs text-subtle;
+    margin-top: 12px;
+  }
+  .wp-check-add svg {
+    @apply h-3.5 w-3.5;
+  }
+  .wp-check-add:hover {
+    @apply text-wp-green-700;
+  }
+}

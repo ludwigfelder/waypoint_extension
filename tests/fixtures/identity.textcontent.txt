@@ -1,0 +1,39 @@
+Identity fixture
+Context
+A paragraph with bold, inline code, and a link.
+AssumptionFirst assumption, resting on src/auth/tokens.ts.
+
+Second assumption with emphasis.
+
+Third assumption.
+DecisionA decision with rationale.
+A neutral note.
+WarningA warning callout.
+Phase 1: Things
+Some prose before a list.
+
+item one
+item two
+
+DetailsOptional subtitleInner prose.
+:::assumption
+Nested assumption inside a collapse.
+:::
+src/main.tsconst x: number = 1;echo helloPhase 1 acceptance gate
+first criterion passessecond criterion doneAdd acceptance criteria
+
+
+Col A
+Col B
+
+
+
+a
+b
+
+
+
+A block quote line.
+
+Verification
+Final paragraph.

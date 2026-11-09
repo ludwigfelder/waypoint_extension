@@ -1,0 +1,37 @@
+node_modules/
+.DS_Store
+*.log
+
+# Build output
+media/
+out/
+*.vsix
+# Agent kit staged for the VSIX by build.ts (source of truth: .claude/, .agents/)
+resources/kit/
+
+# Codex writes session/log state here if CODEX_HOME points at the repo. Skills
+# live in .agents/skills/ (tracked), never here.
+.codex/
+
+# Runtime planning artifacts (plans, comments, review files) live under
+# .waypoint/; the extension still reads a pre-rename .galley/ dir.
+/.vscode/settings.json
+.waypoint/logs/
+.galley/logs/
+
+# Plan-review gate sentinel (toggled by the UserPromptSubmit hook) and the
+# personal hook config (.claude/settings.json stays tracked).
+.waypoint/gate
+.galley/gate
+.claude/settings.local.json
+
+# Waypoint agent kit (installed by the Waypoint extension)
+.claude/skills/waypoint*/
+.claude/commands/waypoint*.md
+.agents/skills/waypoint*/
+.waypoint/
+.galley/
+
+__pycache__/
+# Local secrets (OpenRouter API key)
+.env

@@ -1,0 +1,30 @@
+name: Release
+
+# Publishes to the VS Code Marketplace when a version tag is pushed.
+# Needs a repository secret VSCE_PAT: an Azure DevOps personal access token
+# with the "Marketplace (Manage)" scope for the LudwigFelder publisher.
+#
+# Azure DevOps retires global PATs on 2026-12-01. Before then, switch this
+# job to Microsoft Entra ID auth (a managed identity with workload identity
+# federation and `vsce publish --azure-credential`), as described in the
+# VS Code "Publishing Extensions" docs.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: bun test
+      - run: bun run build
+      - run: bunx @vscode/vsce publish --no-dependencies -p "$VSCE_PAT"
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}

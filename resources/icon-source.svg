@@ -1,0 +1,9 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="28" fill="#11151c"/>
+  <!-- Tabler "wallpaper" glyph (MIT), 24-unit grid scaled to 80px and centred. -->
+  <g transform="translate(24 24) scale(3.3333)" fill="none" stroke="#e6edf3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 6h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6"/>
+    <path d="M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0"/>
+    <path d="M8 18V6a2 2 0 1 0-4 0v12"/>
+  </g>
+</svg>

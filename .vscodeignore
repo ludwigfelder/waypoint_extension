@@ -1,0 +1,33 @@
+# WHITELIST approach: exclude EVERYTHING by default, then re-include (!) only
+# the exact files the extension needs at runtime. Anything new added to the
+# repo is automatically excluded from the VSIX, so dev notes, local plans and
+# build intermediates can never ship by accident.
+#
+# vsce quirk: negated (!) patterns always win, regardless of line order.
+# So we whitelist exact FILES (not folders with **), otherwise things like
+# *.map inside whitelisted folders can't be excluded anymore.
+#
+# package.json and extension.vsixmanifest are always packaged automatically.
+# If the build ever emits a NEW runtime file, it must be added here explicitly.
+
+# 1) exclude everything
+**
+
+# 2) re-include the exact runtime files
+!readme.md
+!LICENSE
+!CHANGELOG.md
+!out/extension.js
+!media/webview.js
+!media/webview.css
+!media/hljs-dark.css
+!media/hljs-light.css
+!resources/icon.png
+!resources/waypoint-dark.svg
+!resources/waypoint-light.svg
+# The agent kit that "Install skills" copies into other repos. build.ts wipes
+# and regenerates this dir from .claude/ and .agents/ (waypoint* only) on
+# every build, and only its .md files and .py helpers (tick.py) are
+# re-included — a stray file of any other type in the folder still can't ship.
+!resources/kit/**/*.md
+!resources/kit/**/*.py

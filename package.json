@@ -1,0 +1,115 @@
+{
+  "name": "waypoint-plan-reviewer",
+  "displayName": "Waypoint Plan Reviewer",
+  "description": "Live, reviewable plan viewer for Claude Code and Codex. Review, comment on and accept agent plans inside VS Code.",
+  "version": "0.3.0",
+  "publisher": "LudwigFelder",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ludwigfelder/waypoint_extension.git"
+  },
+  "homepage": "https://github.com/ludwigfelder/waypoint_extension#readme",
+  "bugs": {
+    "url": "https://github.com/ludwigfelder/waypoint_extension/issues"
+  },
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "keywords": [
+    "claude code",
+    "codex",
+    "planning",
+    "plan review",
+    "coding agent"
+  ],
+  "galleryBanner": {
+    "color": "#11151c",
+    "theme": "dark"
+  },
+  "pricing": "Free",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "main": "./out/extension.js",
+  "icon": "resources/icon.png",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "waypoint.open",
+        "title": "Open Plan Viewer",
+        "category": "Waypoint",
+        "icon": {
+          "light": "resources/waypoint-light.svg",
+          "dark": "resources/waypoint-dark.svg"
+        }
+      },
+      {
+        "command": "waypoint.installSkills",
+        "title": "Install Agent Skills into This Repo",
+        "category": "Waypoint"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "waypoint.open",
+          "group": "navigation@99"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Waypoint",
+      "properties": {
+        "waypoint.terminalName": {
+          "type": "string",
+          "default": "",
+          "description": "Substring of the integrated-terminal name to send the Waypoint trigger to. Empty = auto-detect a terminal named like 'claude' or 'codex', otherwise the active terminal."
+        },
+        "waypoint.agent": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "claude",
+            "codex"
+          ],
+          "default": "auto",
+          "enumDescriptions": [
+            "Inspect the terminal's process tree, then fall back to its name.",
+            "Always send Claude Code's slash command (/waypoint-apply).",
+            "Always send Codex's skill invocation ($waypoint-apply)."
+          ],
+          "description": "Which CLI the Waypoint terminal is running. 'auto' inspects the terminal's process tree, then its name; set it explicitly when auto-detection cannot see the CLI."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "bun run build.ts",
+    "test": "bun test",
+    "watch": "bun run build.ts --watch",
+    "vscode:prepublish": "bun run build.ts",
+    "package": "bun run build && bunx @vscode/vsce package --no-dependencies",
+    "reinstall": "bun run package && code --install-extension waypoint-plan-reviewer-$npm_package_version.vsix --force",
+    "publish": "bunx @vscode/vsce publish --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.0.0",
+    "bun-plugin-svelte": "^0.0.6",
+    "bun-plugin-tailwind": "^0.1.2",
+    "dompurify": "^3.4.11",
+    "highlight.js": "^11.11.1",
+    "jsdom": "^29.1.1",
+    "marked": "^18.0.5",
+    "mermaid": "^11.16.0",
+    "svelte": "^5.56.4",
+    "tailwindcss": "^4.3.1",
+    "typescript": "^5.6.0"
+  }
+}

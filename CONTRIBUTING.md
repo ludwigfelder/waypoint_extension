@@ -69,6 +69,7 @@ it with the stored `vsce` login.
 
 ## Releasing
 
-Bump `version` in `package.json`, add a `CHANGELOG.md` entry, commit, tag
-`v<version>` and push the tag. The release workflow packages and publishes.
-Publishing by hand: `bun run publish` (needs `vsce login LudwigFelder` once).
+Releases are published by hand. Bump `version` in `package.json`, add a
+`CHANGELOG.md` entry, commit, then run `bun run publish`. It needs a one-time
+`vsce login LudwigFelder`, with the publisher name spelled exactly like that.
+Tag the commit `v<version>` and push the tag.
